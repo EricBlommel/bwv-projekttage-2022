@@ -1,8 +1,6 @@
 import React, {useMemo, useRef, useState} from 'react';
 import {TestResponse} from "../types/test.type";
 import TestService from "../services/test.service";
-import {Simulate} from "react-dom/test-utils";
-import submit = Simulate.submit;
 
 interface Props {
 }
@@ -10,7 +8,7 @@ interface Props {
 function Test(props: Props) {
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [test, setTest] = useState<TestResponse>({test: "hallo"});
+  const [test, setTest] = useState<TestResponse>({text: "hallo"});
 
   const updateRef = useRef(() => {
     setLoading(true);
@@ -41,7 +39,7 @@ function Test(props: Props) {
       </div>
       <div>
         {!loading && (
-          <h1>{test.test}</h1>
+          <h1>{test.text}</h1>
         )}
       </div>
     </div>
