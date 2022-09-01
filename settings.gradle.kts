@@ -8,4 +8,5 @@
  */
 
 rootProject.name = "hAPPening"
-include("app")
+include("backend")
+include("frontend")
