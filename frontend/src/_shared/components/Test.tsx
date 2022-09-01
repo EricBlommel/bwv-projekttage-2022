@@ -25,6 +25,7 @@ function Test(props: Props) {
       })
   });
 
+  //not in use
   const fetchData = useMemo(() => {
     updateRef.current();
     return true;
