@@ -1,12 +1,11 @@
 services:
     mariadb:
-        image: mariadb:10.3.25-focal
+        image: mariadb:10.7.5-focal
         container_name: happening-mariadb
         environment:
             - MYSQL_ROOT_PASSWORD=dlokal
             - MYSQL_USER=happening
             - MYSQL_PASSWORD=happeningdm
-            - MYSQL_DATABASE=happening
         volumes:
             - $HOME/Development/docker/happening/mariadb:/var/lib/mariadb
         ports:
