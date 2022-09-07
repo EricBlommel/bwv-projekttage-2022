@@ -1,78 +1,69 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './App.css';
 import {
-    Button, Chip,
-    createTheme,
-    Table,
-    TableBody,
-    TableCell,
-    TableRow,
-    TextField,
-    ThemeProvider
+  Box, CircularProgress,
+  createTheme, CssBaseline, Grid, IconButton, Stack, Switch,
+  ThemeProvider
 } from "@mui/material";
+import Test from "./_shared/components/Test";
+import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
+import HappeningAppBar from "./_shared/components/appbar/HappeningAppBar";
+import {RootState} from "./_shared/helpers/store";
+import {connect, ConnectedProps} from "react-redux";
+import {AddCircle} from "@mui/icons-material";
+import AddEventButton from "./_shared/components/AddEventButton";
 
-const darkTheme = createTheme({
-    palette: {
-        mode: "dark"
-    }
+const mapState = (state: RootState) => ({
+  themeStoreDarkMode: state.themeStore.darkMode
+});
+
+const connector = connect(mapState);
+
+const themeDark = createTheme({
+  palette: {
+    mode: "dark"
+  }
 })
-const theme = {
-    spacing: 8,
+
+const themeLight = createTheme({
+  palette: {
+    mode: "light"
+  }
+})
+
+interface Props extends ConnectedProps<typeof connector> {
+
 }
 
-function App() {
+function App(props: Props) {
 
-    const [items, setItems] = useState<string[]>([]);
-    const [text, setText] = useState<string>("");
+  return (
+    <ThemeProvider theme={props.themeStoreDarkMode ? themeDark : themeLight}>
+      <BrowserRouter>
+        <HappeningAppBar/>
+        <CssBaseline/>
 
-    function handleAdd(item: string) {
-        const newList = items.concat(item);
+        <Routes>
+          <Route element={
+            <Box sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              alignContent: 'center',
+              height: '90vh'
+            }}
+                 justifyContent={"center"}>
+              <Stack spacing={2}>
+                <AddEventButton/>
+              </Stack>
 
-        setItems(newList);
-        setText("");
-    }
+            </Box>
+          } path="/"/>
+          <Route path="/event/" element={<CircularProgress/>} />
+        </Routes>
 
-    function handleDelete(item: string) {
-        const newList = items.concat(item);
-
-        setItems(newList);
-    }
-
-    return (
-        <ThemeProvider theme={darkTheme}>
-            <body className="App">
-            <div id="header"></div>
-            <div id="main">
-                <Table id={"userAndItems"}>
-                    <TableBody>
-                        <TableRow>
-                            <TableCell>Item</TableCell>
-                            <TableCell>User</TableCell>
-                            <TableCell></TableCell>
-                            <TableCell></TableCell>
-                        </TableRow>
-                        {/*{items.map((row) =>*/}
-                            <TableRow>
-                                <TableCell>{/*row.item*/}</TableCell>
-                                <TableCell>{/*row.user*/}</TableCell>
-                            </TableRow>
-                        {/*)}*/}
-
-                    </TableBody>
-                </Table>
-                <div id={"uncategorizedItemList"}>
-                    {items.map((item) =>
-                        <Chip label={item} onDelete={handleDelete} sx={{mr: 1, mb: 1}}></Chip>
-                    )}
-                </div>
-                <TextField value={text} variant={"outlined"} className={"addItem"} id={"itemName"} onChange={event => setText(event.target.value)} ></TextField>
-                <Button className={"addItem"} variant={"contained"} onClick={() => handleAdd(text)}>add</Button>
-                {/*<Button className={"addItem"} variant={"contained"} onClick={() => handleAdd({item: "dings", user: "ebl"})}>add</Button>*/}
-            </div>
-            <div id="footer"></div>
-            </body>
-        </ThemeProvider>
-    );
+      </BrowserRouter>
+    </ThemeProvider>
+  );
 }
 
-export default App;
+export default connector(App);
