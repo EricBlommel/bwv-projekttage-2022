@@ -1,78 +1,52 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './App.css';
 import {
-    Button, Chip,
-    createTheme,
-    Table,
-    TableBody,
-    TableCell,
-    TableRow,
-    TextField,
-    ThemeProvider
+  createTheme, IconButton,
+  ThemeProvider
 } from "@mui/material";
+import Test from "./_shared/components/Test";
+import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
+import HappeningAppBar from "./_shared/components/appbar/HappeningAppBar";
+import {RootState} from "./_shared/helpers/store";
+import {connect, ConnectedProps} from "react-redux";
+import {AddCircle} from "@mui/icons-material";
 
-const darkTheme = createTheme({
+const mapState = (state: RootState) => ({
+  themeStoreDarkMode: state.themeStore.darkMode
+});
+
+const connector = connect(mapState);
+
+const themeDark = createTheme({
     palette: {
         mode: "dark"
     }
 })
-const theme = {
-    spacing: 8,
+
+const themeLight = createTheme({
+  palette: {
+    mode: "light"
+  }
+})
+
+interface Props extends ConnectedProps<typeof connector> {
+
 }
 
-function App() {
-
-    const [items, setItems] = useState<string[]>([]);
-    const [text, setText] = useState<string>("");
-
-    function handleAdd(item: string) {
-        const newList = items.concat(item);
-
-        setItems(newList);
-        setText("");
-    }
-
-    function handleDelete(item: string) {
-        const newList = items.concat(item);
-
-        setItems(newList);
-    }
+function App(props: Props) {
 
     return (
-        <ThemeProvider theme={darkTheme}>
-            <body className="App">
-            <div id="header"></div>
-            <div id="main">
-                <Table id={"userAndItems"}>
-                    <TableBody>
-                        <TableRow>
-                            <TableCell>Item</TableCell>
-                            <TableCell>User</TableCell>
-                            <TableCell></TableCell>
-                            <TableCell></TableCell>
-                        </TableRow>
-                        {/*{items.map((row) =>*/}
-                            <TableRow>
-                                <TableCell>{/*row.item*/}</TableCell>
-                                <TableCell>{/*row.user*/}</TableCell>
-                            </TableRow>
-                        {/*)}*/}
+        <ThemeProvider theme={props.themeStoreDarkMode ? themeDark : themeLight}>
+          <BrowserRouter>
+          <HappeningAppBar/>
 
-                    </TableBody>
-                </Table>
-                <div id={"uncategorizedItemList"}>
-                    {items.map((item) =>
-                        <Chip label={item} onDelete={handleDelete} sx={{mr: 1, mb: 1}}></Chip>
-                    )}
-                </div>
-                <TextField value={text} variant={"outlined"} className={"addItem"} id={"itemName"} onChange={event => setText(event.target.value)} ></TextField>
-                <Button className={"addItem"} variant={"contained"} onClick={() => handleAdd(text)}>add</Button>
-                {/*<Button className={"addItem"} variant={"contained"} onClick={() => handleAdd({item: "dings", user: "ebl"})}>add</Button>*/}
-            </div>
-            <div id="footer"></div>
-            </body>
+            <IconButton>
+              <AddCircle/>
+            </IconButton>
+
+          </BrowserRouter>
         </ThemeProvider>
     );
 }
 
-export default App;
+export default connector(App);
