@@ -58,4 +58,71 @@ public class EventEntity {
         fetch = FetchType.LAZY
     )
     private Set<ItemEntity> items;
+
+    public EventEntity() {
+    }
+
+    public EventEntity(String id, String name, Instant beginsAt, String description, UserEntity creator) {
+        this.id = id;
+        this.name = name;
+        this.beginsAt = beginsAt;
+        this.description = description;
+        this.creator = creator;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Instant getBeginsAt() {
+        return beginsAt;
+    }
+
+    public void setBeginsAt(Instant beginsAt) {
+        this.beginsAt = beginsAt;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public UserEntity getCreator() {
+        return creator;
+    }
+
+    public void setCreator(UserEntity creator) {
+        this.creator = creator;
+    }
+
+    public Set<UserEntity> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<UserEntity> users) {
+        this.users = users;
+    }
+
+    public Set<ItemEntity> getItems() {
+        return items;
+    }
+
+    public void setItems(Set<ItemEntity> items) {
+        this.items = items;
+    }
 }
