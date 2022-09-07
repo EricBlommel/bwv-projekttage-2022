@@ -16,26 +16,24 @@ const darkTheme = createTheme({
         mode: "dark"
     }
 })
-const theme = {
-    spacing: 8,
-}
+// const theme = {
+//     spacing: 8,
+// }
 
 function App() {
 
-    const [items, setItems] = useState<string[]>([]);
+    const [uncategorizedItems, setuncategorizedItems] = useState<string[]>([]);
     const [text, setText] = useState<string>("");
 
-    function handleAdd(item: string) {
-        const newList = items.concat(item);
-
-        setItems(newList);
-        setText("");
+    function handleDelete(indexToDelete: number) {
+        setuncategorizedItems(uncategorizedItems => uncategorizedItems.filter((value, index: number) => index !== indexToDelete))
     }
 
-    function handleDelete(item: string) {
-        const newList = items.concat(item);
+    function handleAdd(item: string) {
+        const newList = uncategorizedItems.concat(item);
 
-        setItems(newList);
+        setuncategorizedItems(newList);
+        setText("");
     }
 
     return (
@@ -46,28 +44,30 @@ function App() {
                 <Table id={"userAndItems"}>
                     <TableBody>
                         <TableRow>
-                            <TableCell>Item</TableCell>
                             <TableCell>User</TableCell>
                             <TableCell></TableCell>
                             <TableCell></TableCell>
+                            <TableCell></TableCell>
                         </TableRow>
-                        {/*{items.map((row) =>*/}
-                            <TableRow>
-                                <TableCell>{/*row.item*/}</TableCell>
-                                <TableCell>{/*row.user*/}</TableCell>
-                            </TableRow>
-                        {/*)}*/}
-
+                        <TableRow>
+                            <TableCell></TableCell>
+                            <TableCell></TableCell>
+                        </TableRow>
                     </TableBody>
                 </Table>
                 <div id={"uncategorizedItemList"}>
-                    {items.map((item) =>
-                        <Chip label={item} onDelete={handleDelete} sx={{mr: 1, mb: 1}}></Chip>
+                    {uncategorizedItems.map((uncategorizedItem, index) =>
+                        <Chip
+                            key={uncategorizedItem}
+                            label={uncategorizedItem}
+                            onDelete={() => handleDelete(index)}
+                            sx={{mr: 1, mb: 1}}
+                        ></Chip>
                     )}
                 </div>
-                <TextField value={text} variant={"outlined"} className={"addItem"} id={"itemName"} onChange={event => setText(event.target.value)} ></TextField>
+                <TextField value={text} variant={"outlined"} className={"addItem"} id={"itemName"}
+                           onChange={event => setText(event.target.value)}></TextField>
                 <Button className={"addItem"} variant={"contained"} onClick={() => handleAdd(text)}>add</Button>
-                {/*<Button className={"addItem"} variant={"contained"} onClick={() => handleAdd({item: "dings", user: "ebl"})}>add</Button>*/}
             </div>
             <div id="footer"></div>
             </body>
