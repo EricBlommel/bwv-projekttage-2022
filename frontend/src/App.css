@@ -16,6 +16,7 @@
 #main {
     height: 87vh;
     width: 100vw;
+    padding: 0;
 }
 
 #footer {
@@ -26,15 +27,17 @@
 
 .addItem {
     height: 55px;
+    bottom: 1px;
 }
 
 #userAndItems {
     width: 90vw;
     border: lightgrey;
     text-align: center;
-    margin-right: auto;
-    margin-left: auto;
-    margin-bottom: 10px;
+    margin: 1vh auto 10px auto;
+    height: 50vh;
+    max-height: 50vh;
+    align-content: start;
 }
 
 #userOfItem {
@@ -48,12 +51,12 @@
 }
 
 #uncategorizedItemList{
-    height: 40vh;
+    height: 20vh;
     width: 80vw;
     border: 1px solid grey;
     box-shadow: 10px 10px 5px rgba(0,0,0,0.5);
     border-radius: 20px;
-    margin: 10vh auto 5vh auto;
+    margin: auto auto 5vh auto;
     text-align: left;
     padding: 20px;
 }
