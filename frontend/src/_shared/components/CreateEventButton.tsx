@@ -1,9 +1,9 @@
 import React, {ChangeEvent} from 'react';
 import dayjs, {Dayjs} from 'dayjs';
 import {
-  Button,
-  Dialog, DialogActions, DialogContent, DialogTitle, Fab,
-  IconButton, TextField, Tooltip
+    Button,
+    Dialog, DialogActions, DialogContent, DialogTitle,
+    IconButton, TextField, Tooltip
 } from "@mui/material";
 import {Add} from "@mui/icons-material";
 import {DesktopDatePicker, LocalizationProvider} from "@mui/x-date-pickers";
@@ -21,7 +21,7 @@ const fabStyle = {
 function CreateEventButton() {
 
     const [open, setOpen] = React.useState<boolean>(false);
-    const [redirectID, setRedirectID] = React.useState<string | undefined>(undefined);
+    const [success, setSuccess] = React.useState<boolean>(false);
     const [name, setName] = React.useState<string>("");
     const [date, setDate] = React.useState<Dayjs | null>(
         dayjs(),
