@@ -12,6 +12,7 @@ import {RootState} from "./_shared/helpers/store";
 import {connect, ConnectedProps} from "react-redux";
 import {AddCircle} from "@mui/icons-material";
 import AddEventButton from "./_shared/components/AddEventButton";
+import EventPage from "./_shared/components/EventPage";
 
 const mapState = (state: RootState) => ({
   themeStoreDarkMode: state.themeStore.darkMode
@@ -58,7 +59,7 @@ function App(props: Props) {
 
             </Box>
           } path="/"/>
-          <Route path="/event/" element={<CircularProgress/>} />
+          <Route path="/event/" element={<EventPage/>} />
         </Routes>
 
       </BrowserRouter>
