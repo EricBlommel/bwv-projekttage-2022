@@ -4,7 +4,6 @@ import ThemeSwitch from "./ThemeSwitch";
 import UserButton from "./UserButton";
 import {Link, Route, Routes} from "react-router-dom";
 import {Home} from "@mui/icons-material";
-import CopyButton from "./CopyButton";
 
 function HappeningAppBar() {
 
@@ -25,7 +24,6 @@ function HappeningAppBar() {
         <Typography variant="h6" component="div" color="inherit" sx={{ flexGrow: 1 }} fontFamily="Monospace" >
           hAPPening
         </Typography>
-        <CopyButton/>
         <ThemeSwitch />
         <UserButton />
       </Toolbar>
