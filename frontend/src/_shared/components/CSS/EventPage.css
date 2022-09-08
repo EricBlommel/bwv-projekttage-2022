@@ -31,6 +31,7 @@
     height: 50vh;
     max-height: 50vh;
     align-content: start;
+    max-width: 90vw;
 }
 
 #userOfItem {
@@ -45,6 +46,7 @@
 
 #uncategorizedItemList{
     height: 20vh;
+    max-height: 20vh;
     width: 80vw;
     border: 1px solid grey;
     box-shadow: 10px 10px 5px rgba(0,0,0,0.5);
@@ -52,4 +54,5 @@
     margin: auto auto 5vh auto;
     text-align: left;
     padding: 20px;
+    overflow: scroll;
 }
