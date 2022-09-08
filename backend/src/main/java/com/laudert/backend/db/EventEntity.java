@@ -1,5 +1,8 @@
 package com.laudert.backend.db;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +15,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.GeneratedValue;
 import java.time.Instant;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity(name = "Event")
 @Table(name = "event")
@@ -21,7 +26,10 @@ public class EventEntity {
 
     @Id
     @Column(name = "id", unique = true, nullable = false, updatable = false)
-    private String id;
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @Type(type = "uuid-char")
+    private UUID id;
 
     @Column(name = "name")
     private String name;
@@ -35,7 +43,6 @@ public class EventEntity {
     @ManyToOne
     @JoinColumn(
         name = "creator_id",
-        nullable = false,
         referencedColumnName = "id",
         foreignKey = @ForeignKey(
             name = "creator_fk"
@@ -62,7 +69,7 @@ public class EventEntity {
     public EventEntity() {
     }
 
-    public EventEntity(String id, String name, Instant beginsAt, String description, UserEntity creator) {
+    public EventEntity(UUID id, String name, Instant beginsAt, String description, UserEntity creator) {
         this.id = id;
         this.name = name;
         this.beginsAt = beginsAt;
@@ -70,11 +77,17 @@ public class EventEntity {
         this.creator = creator;
     }
 
-    public String getId() {
+    public EventEntity(String name, Instant beginsAt, String description) {
+        this.name = name;
+        this.beginsAt = beginsAt;
+        this.description = description;
+    }
+
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
