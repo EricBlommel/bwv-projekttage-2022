@@ -2,7 +2,8 @@ package com.laudert.backend.controller;
 
 import com.laudert.backend.db.EventEntity;
 import com.laudert.backend.db.EventRepository;
-import jdk.jfr.Event;
+import com.laudert.backend.db.ItemEntity;
+import com.laudert.backend.db.ItemRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,36 +19,34 @@ import java.util.UUID;
 
 @RestController
 @CrossOrigin
-@RequestMapping(path = "api/event")
-public class EventController {
+@RequestMapping(path = "api/item")
+public class ItemController {
 
-    private final EventRepository eventRepository;
+    private final ItemRepository itemRepository;
 
-    public EventController(EventRepository eventRepository) {
-        this.eventRepository = eventRepository;
+    public ItemController(ItemRepository eventRepository) {
+        this.itemRepository = eventRepository;
     }
 
     @GetMapping("")
-    public List<EventEntity> getEvents() {
-        return eventRepository.findAll();
+    public List<ItemEntity> getItems() {
+        return itemRepository.findAll();
     }
 
     @GetMapping("/get/{id}")
-    public EventEntity getevent(@PathVariable UUID id) {
-        if(eventRepository.findById(id).isPresent()) {
-            return eventRepository.findById(id).get();
+    public ItemEntity getevent(@PathVariable UUID id) {
+        if(itemRepository.findById(id).isPresent()) {
+            return itemRepository.findById(id).get();
         }
         return null;
     }
 
     @PostMapping("/create")
-    public ResponseEntity<EventEntity> createEvent(@RequestBody EventEntity event){
+    public ResponseEntity<ItemEntity> createEvent(@RequestBody ItemEntity item){
         try {
-            return new ResponseEntity<>(eventRepository.save(event), HttpStatus.CREATED);
+            return new ResponseEntity<>(itemRepository.save(item), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
 }

@@ -1,8 +1,9 @@
 package com.laudert.backend.controller;
 
-import com.laudert.backend.db.EventEntity;
-import com.laudert.backend.db.EventRepository;
-import jdk.jfr.Event;
+import com.laudert.backend.db.ItemEntity;
+import com.laudert.backend.db.ItemRepository;
+import com.laudert.backend.db.UserEntity;
+import com.laudert.backend.db.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,36 +19,34 @@ import java.util.UUID;
 
 @RestController
 @CrossOrigin
-@RequestMapping(path = "api/event")
-public class EventController {
+@RequestMapping(path = "api/user")
+public class UserController {
 
-    private final EventRepository eventRepository;
+    private final UserRepository userRepository;
 
-    public EventController(EventRepository eventRepository) {
-        this.eventRepository = eventRepository;
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @GetMapping("")
-    public List<EventEntity> getEvents() {
-        return eventRepository.findAll();
+    public List<UserEntity> getItems() {
+        return userRepository.findAll();
     }
 
     @GetMapping("/get/{id}")
-    public EventEntity getevent(@PathVariable UUID id) {
-        if(eventRepository.findById(id).isPresent()) {
-            return eventRepository.findById(id).get();
+    public UserEntity getevent(@PathVariable UUID id) {
+        if(userRepository.findById(id).isPresent()) {
+            return userRepository.findById(id).get();
         }
         return null;
     }
 
     @PostMapping("/create")
-    public ResponseEntity<EventEntity> createEvent(@RequestBody EventEntity event){
+    public ResponseEntity<UserEntity> createEvent(@RequestBody UserEntity user){
         try {
-            return new ResponseEntity<>(eventRepository.save(event), HttpStatus.CREATED);
+            return new ResponseEntity<>(userRepository.save(user), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
 }

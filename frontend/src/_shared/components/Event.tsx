@@ -3,7 +3,10 @@ import {TestResource} from "../types/test.type";
 import EventService from "../services/event.service";
 import {EventResource} from "../types/event.type";
 import {useParams} from "react-router-dom";
-import {Button, Chip, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField} from "@mui/material";
+import {Box, Button, Chip, Grid, IconButton, Input, InputAdornment, OutlinedInput, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField} from "@mui/material";
+import {UserResource} from "../types/user.type";
+import {ItemResource} from "../types/item.type";
+import {Send} from "@mui/icons-material";
 
 interface Props {
 }
@@ -41,98 +44,78 @@ function Event(props: Props) {
     return true;
   }, [updateRef]);
 
-  const [uncategorizedItems, setUncategorizedItems] = useState<string[]>([]);
+  const [uncategorizedItems, setUncategorizedItems] = useState<string[]>(["test"]);
   const [text, setText] = useState<string>("");
   const [categorizedItems, setCategorizedItems] = useState<item[]>([]);
-  const [users] = useState(['User 1', 'User 2', 'User 3', 'User 4', 'User 5', 'User 6', 'User 7', 'User 8', 'User 9', 'User 10', 'User 11', 'User 12']);
-  const testUser = 'User 5'
-
-  function handleDeleteUncategorized(indexToDelete: number) {
-    setUncategorizedItems(uncategorizedItems => uncategorizedItems.filter((value, index: number) => index !== indexToDelete));
-  }
-
-  function handleDeleteCategorized(indexToDelete: number) {
-    setCategorizedItems(uncategorizedItems => uncategorizedItems.filter((value, index: number) => index !== indexToDelete));
-  }
-
-  function handleAdd(item: string) {
-
-    if(item !== ''){
-      const newList = uncategorizedItems.concat(item);
-      setUncategorizedItems(newList);
-      setText("");
-    }
-  }
-
-  function addItemsToUser(item: string, index: number) {
-    const newList = categorizedItems.concat({item: item, user: testUser});
-    setCategorizedItems(newList);
-    handleDeleteUncategorized(index);
-    console.log(newList);
-  }
+  const [users] = useState([]);
 
   return (
-    <div className="EventPage">
-      <div id="main">
-        <TableContainer style={{maxHeight: 450}}>
-          <Table id={"userAndItems"} stickyHeader={true}>
+    <div>
+      <Box sx={{margin: 4}}>
+        <TableContainer component={Paper} sx={{minHeight: 400, maxHeight: 400}}>
+          <Table stickyHeader={true}>
             <TableHead>
               <TableRow>
-                {users.map((user) =>
-                  <TableCell>{user}</TableCell>
-                )}
+                <TableCell>Benutzer</TableCell>
+                <TableCell>Items</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow id={'contentRow'}>
-                {users.map((user) =>
-                  <TableCell style={{verticalAlign: "top"}}>
-                    {
-                      categorizedItems.map((categorizedItem, index) =>
-                          user === categorizedItem.user && (
-                            <Stack direction={"column"}>
-                              <Chip
-                                key={index}
-                                label={categorizedItem.item}
-                                onDelete={() => handleDeleteCategorized(index)}
-                                sx={{mt: 1}}
-                                style={{maxWidth: 'max-content'}}
-                              />
-                            </Stack>
-                          )
-                      )
-                    }
-                  </TableCell>
-                )}
+              {event.users && event.users!.map((user: UserResource) =>
+                <TableRow>
+                  <TableCell>{user.nickname}</TableCell>
+                  <TableCell>{event.items!.filter((value: ItemResource) => value!.user!.id === user.id).map((item: ItemResource, index: number) => <Chip
+                    key={index}
+                    label={item.name}
+                    onDelete={() => console.log()}
+                    sx={{mt: 1}}
+                    style={{maxWidth: 'max-content'}}
+                  />)}</TableCell>
+                </TableRow>)}
+              <TableRow>
+                <TableCell>User1</TableCell>
+                <TableCell>User1</TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
-        <Stack alignItems={"flex-end"} justifyContent={"center"} sx={{height: '30vh'}}>
-          <div id={"uncategorizedItemList"}>
-            {
-              uncategorizedItems.map((uncategorizedItem, index) =>
-                <Chip
-                  key={index}
-                  label={uncategorizedItem}
-                  onDelete={() => handleDeleteUncategorized(index)}
-                  sx={{mr: 1, mb: 1}}
-                  onClick={() => addItemsToUser(uncategorizedItem, index)}
-                />
-              )}
-          </div>
-        </Stack>
-        <Stack alignItems={"flex-end"} justifyContent={"center"} direction={"row"} sx={{height: '4vh'}}
-               onKeyPress={(e) => e.key === 'Enter' && handleAdd(text)}>
-          <TextField value={text} variant={"outlined"} className={"addItem"} id={"itemName"}
-                     onChange={event => setText(event.target.value)}></TextField>
-          <Button className={"addItem"} variant={"contained"} onClick={() => handleAdd(text)}>add</Button>
-        </Stack>
-      </div>
-      <div id="footer"></div>
-      <h1>{event.name}</h1>
+      </Box>
+      <Box sx={{margin: 4}}>
+        <Paper sx={{minHeight: 300, maxHeight: 300}}>
+          {
+            uncategorizedItems.map((uncategorizedItem, index) =>
+              <Chip
+                key={index}
+                label={uncategorizedItem}
+                onDelete={() => console.log("delete")}
+                sx={{margin: 2}}
+                onClick={() => console.log("delete")}
+              />
+            )}
+        </Paper>
+      </Box>
+      <Box alignItems="center" sx={{margin: 4}}>
+        <Grid container justifyContent="center" alignItems="center">
+          <Grid item >
+            <OutlinedInput
+              value={text}
+              onChange={() => console.log()}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => console.log()}
+                    onMouseDown={() => console.log()}
+                  >
+                    <Send/>
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </Grid>
+        </Grid>
+      </Box>
     </div>
-
   );
 }
 

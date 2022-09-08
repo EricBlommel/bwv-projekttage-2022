@@ -2,10 +2,17 @@ import React from 'react';
 import {AppBar, IconButton, Toolbar, Typography} from "@mui/material";
 import ThemeSwitch from "./ThemeSwitch";
 import UserButton from "./UserButton";
-import {Link, Route, Routes} from "react-router-dom";
+import {Route, Routes, useNavigate} from "react-router-dom";
 import {Home} from "@mui/icons-material";
+import CopyButton from "./CopyButton";
 
 function HappeningAppBar() {
+
+  let navigate = useNavigate();
+  const routeChange = () => {
+    let path = ``;
+    navigate(path);
+  }
 
   return (
     <AppBar position="static">
@@ -16,16 +23,20 @@ function HappeningAppBar() {
             edge="start"
             color="inherit"
             aria-label="menu"
-            sx={{ mr: 2 }}
+            sx={{mr: 2}}
+            onClick={routeChange}
           >
-            <Link to="/" style={{ textDecoration: 'none', color: 'white'}}><Home/></Link>
-          </IconButton>} path="/event/:id" />
+            <Home/>
+          </IconButton>} path="/event/:id"/>
         </Routes>
-        <Typography variant="h6" component="div" color="inherit" sx={{ flexGrow: 1 }} fontFamily="Monospace" >
+        <Typography variant="h6" component="div" color="inherit" sx={{flexGrow: 1}} fontFamily="Monospace">
           hAPPening
         </Typography>
-        <ThemeSwitch />
-        <UserButton />
+        <Routes>
+          <Route element={<CopyButton/>}  path="/event/:id"/>
+        </Routes>
+        <ThemeSwitch/>
+        <UserButton/>
       </Toolbar>
     </AppBar>
   );
