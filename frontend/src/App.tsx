@@ -1,8 +1,7 @@
 import React from 'react';
 import './App.css';
 import {
-  Box, CircularProgress,
-  createTheme, CssBaseline, Fab, Grid, IconButton, Stack, Switch,
+  createTheme, CssBaseline,
   ThemeProvider
 } from "@mui/material";
 import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
