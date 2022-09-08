@@ -10,19 +10,37 @@ import {
   TextField,
   ThemeProvider
 } from "@mui/material";
+import {connect, ConnectedProps} from "react-redux";
+import {RootState} from "../helpers/store";
 
-const darkTheme = createTheme({
+const mapState = (state: RootState) => ({
+  themeStoreDarkMode: state.themeStore.darkMode
+});
+
+const connector = connect(mapState);
+
+const themeDark = createTheme({
   palette: {
     mode: "dark"
   }
 })
+
+const themeLight = createTheme({
+  palette: {
+    mode: "light"
+  }
+})
+
+interface Props extends ConnectedProps<typeof connector> {
+
+}
 
 interface item {
   item: string;
   user: string;
 }
 
-function EventPage() {
+function EventPage(props: Props) {
 
   const [uncategorizedItems, setUncategorizedItems] = useState<string[]>([]);
   const [text, setText] = useState<string>("");
@@ -53,9 +71,8 @@ function EventPage() {
   }
 
   return (
-      <ThemeProvider theme={darkTheme}>
-        <div className="App">
-          <div id="header"></div>
+      <ThemeProvider theme={props.themeStoreDarkMode ? themeDark : themeLight}>
+        <div className="EventPage">
           <div id="main">
             <TableContainer style={{maxHeight: 450}}>
               <Table id={"userAndItems"} stickyHeader={true}>
@@ -117,4 +134,4 @@ function EventPage() {
   );
 }
 
-export default EventPage;
+export default connector(EventPage);
