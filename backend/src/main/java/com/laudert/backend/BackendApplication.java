@@ -20,7 +20,7 @@ public class BackendApplication {
         SpringApplication.run(BackendApplication.class, args);
     }
 
-    @Bean
+/*    @Bean
     CommandLineRunner commandLineRunner(EventRepository eventRepository, UserRepository userRepository) {
         return args -> {
             UserEntity ebl = new UserEntity(
@@ -53,8 +53,8 @@ public class BackendApplication {
                 .findById("nidnio21io23nmm")
                 .ifPresentOrElse(
                     System.out::println,
-                    () -> System.out.println("Student with ID 3 not found"));
+                    () -> System.out.println("event not found"));
 
         };
-    }
+    }*/
 }

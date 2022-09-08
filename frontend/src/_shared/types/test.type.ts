@@ -1,5 +1,5 @@
 import {HalResource} from "./hal.type";
 
-export interface TestResponse extends HalResource {
+export interface TestResource extends HalResource {
   text?: string;
 }

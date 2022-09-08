@@ -2,5 +2,7 @@ package com.laudert.backend.db;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface EventRepository extends JpaRepository<EventEntity, String> {
+import java.util.UUID;
+
+public interface EventRepository extends JpaRepository<EventEntity, UUID> {
 }

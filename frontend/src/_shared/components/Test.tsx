@@ -1,5 +1,5 @@
 import React, {useMemo, useRef, useState} from 'react';
-import {TestResponse} from "../types/test.type";
+import {TestResource} from "../types/test.type";
 import TestService from "../services/test.service";
 
 interface Props {
@@ -8,13 +8,13 @@ interface Props {
 function Test(props: Props) {
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [test, setTest] = useState<TestResponse>({text: "hallo"});
+  const [test, setTest] = useState<TestResource>({text: "hallo"});
 
   const updateRef = useRef(() => {
     setLoading(true);
     new TestService()
       .getTest()
-      .then((response: TestResponse) => {
+      .then((response: TestResource) => {
         setTest(response);
       })
       .catch(error => {
