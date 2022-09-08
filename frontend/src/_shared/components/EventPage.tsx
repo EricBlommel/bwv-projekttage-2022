@@ -2,36 +2,17 @@ import React, {useState} from 'react';
 import './CSS/EventPage.css';
 import {
     Button, Chip,
-    createTheme, Stack,
+    Stack,
     Table,
     TableBody,
     TableCell, TableContainer, TableHead,
     TableRow,
     TextField,
-    ThemeProvider
+
 } from "@mui/material";
-import {connect, ConnectedProps} from "react-redux";
-import {RootState} from "../helpers/store";
 
-const mapState = (state: RootState) => ({
-    themeStoreDarkMode: state.themeStore.darkMode
-});
 
-const connector = connect(mapState);
-
-const themeDark = createTheme({
-    palette: {
-        mode: "dark"
-    }
-})
-
-const themeLight = createTheme({
-    palette: {
-        mode: "light"
-    }
-})
-
-interface Props extends ConnectedProps<typeof connector> {
+interface Props {
 
 }
 
@@ -73,7 +54,6 @@ function EventPage(props: Props) {
     }
 
     return (
-        <ThemeProvider theme={props.themeStoreDarkMode ? themeDark : themeLight}>
             <div className="EventPage">
                 <div id="main">
                     <TableContainer style={{maxHeight: 450}}>
@@ -133,8 +113,8 @@ function EventPage(props: Props) {
                 </div>
                 <div id="footer"></div>
             </div>
-        </ThemeProvider>
+
     );
 }
 
-export default connector(EventPage);
+export default EventPage;
