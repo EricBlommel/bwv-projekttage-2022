@@ -39,10 +39,10 @@ function EventPage(props: Props) {
 
     function handleAdd(item: string) {
 
-        if(item !== ''){
-        const newList = uncategorizedItems.concat(item);
-        setUncategorizedItems(newList);
-        setText("");
+        if (item !== '') {
+            const newList = uncategorizedItems.concat(item);
+            setUncategorizedItems(newList);
+            setText("");
         }
     }
 
@@ -54,66 +54,65 @@ function EventPage(props: Props) {
     }
 
     return (
-            <div className="EventPage">
-                <div id="main">
-                    <TableContainer style={{maxHeight: 450}}>
-                        <Table id={"userAndItems"} stickyHeader={true}>
-                            <TableHead>
-                                <TableRow>
-                                    {users.map((user) =>
-                                        <TableCell>{user}</TableCell>
-                                    )}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                <TableRow id={'contentRow'}>
-                                    {users.map((user) =>
-                                        <TableCell style={{verticalAlign: "top"}}>
-                                            {
-                                                categorizedItems.map((categorizedItem, index) =>
-                                                        user === categorizedItem.user && (
-                                                            <Stack direction={"column"}>
-                                                                <Chip
-                                                                    key={index}
-                                                                    label={categorizedItem.item}
-                                                                    onDelete={() => handleDeleteCategorized(index)}
-                                                                    sx={{mt: 1}}
-                                                                    style={{maxWidth: 'max-content'}}
-                                                                />
-                                                            </Stack>
-                                                        )
-                                                )
-                                            }
-                                        </TableCell>
-                                    )}
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    <Stack alignItems={"flex-end"} justifyContent={"center"} sx={{height: '30vh'}}>
-                        <div id={"uncategorizedItemList"}>
-                            {
-                                uncategorizedItems.map((uncategorizedItem, index) =>
-                                    <Chip
-                                        key={index}
-                                        label={uncategorizedItem}
-                                        onDelete={() => handleDeleteUncategorized(index)}
-                                        sx={{mr: 1, mb: 1}}
-                                        onClick={() => addItemsToUser(uncategorizedItem, index)}
-                                    />
+        <div className="EventPage">
+            <div id="main">
+                <TableContainer style={{maxHeight: 450}}>
+                    <Table id={"userAndItems"} stickyHeader={true}>
+                        <TableHead>
+                            <TableRow>
+                                {users.map((user) =>
+                                    <TableCell>{user}</TableCell>
                                 )}
-                        </div>
-                    </Stack>
-                    <Stack alignItems={"flex-end"} justifyContent={"center"} direction={"row"} sx={{height: '4vh'}}
-                           onKeyPress={(e) => e.key === 'Enter' && handleAdd(text)}>
-                        <TextField value={text} variant={"outlined"} className={"addItem"} id={"itemName"}
-                                   onChange={event => setText(event.target.value)}></TextField>
-                        <Button className={"addItem"} variant={"contained"} onClick={() => handleAdd(text)}>add</Button>
-                    </Stack>
-                </div>
-                <div id="footer"></div>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            <TableRow id={'contentRow'}>
+                                {users.map((user) =>
+                                    <TableCell style={{verticalAlign: "top"}}>
+                                        {
+                                            categorizedItems.map((categorizedItem, index) =>
+                                                    user === categorizedItem.user && (
+                                                        <Stack direction={"column"}>
+                                                            <Chip
+                                                                key={index}
+                                                                label={categorizedItem.item}
+                                                                onDelete={() => handleDeleteCategorized(index)}
+                                                                sx={{mt: 1}}
+                                                                style={{maxWidth: 'max-content'}}
+                                                            />
+                                                        </Stack>
+                                                    )
+                                            )
+                                        }
+                                    </TableCell>
+                                )}
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <Stack alignItems={"flex-end"} justifyContent={"center"} sx={{height: '30vh'}}>
+                    <div id={"uncategorizedItemList"}>
+                        {
+                            uncategorizedItems.map((uncategorizedItem, index) =>
+                                <Chip
+                                    key={index}
+                                    label={uncategorizedItem}
+                                    onDelete={() => handleDeleteUncategorized(index)}
+                                    sx={{mr: 1, mb: 1}}
+                                    onClick={() => addItemsToUser(uncategorizedItem, index)}
+                                />
+                            )}
+                    </div>
+                </Stack>
+                <Stack alignItems={"flex-end"} justifyContent={"center"} direction={"row"} sx={{height: '4vh'}}
+                       onKeyPress={(e) => e.key === 'Enter' && handleAdd(text)}>
+                    <TextField value={text} variant={"outlined"} className={"addItem"} id={"itemName"}
+                               onChange={event => setText(event.target.value)}></TextField>
+                    <Button className={"addItem"} variant={"contained"} onClick={() => handleAdd(text)}>add</Button>
+                </Stack>
             </div>
-
+            <div id="footer"></div>
+        </div>
     );
 }
 
