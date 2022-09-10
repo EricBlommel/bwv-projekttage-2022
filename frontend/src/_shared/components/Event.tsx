@@ -63,7 +63,7 @@ function Event(props: Props) {
             <TableBody>
               {event.users && event.users!.map((user: UserResource) =>
                 <TableRow>
-                  <TableCell>{user.nickname}</TableCell>
+                  <TableCell>{user.username}</TableCell>
                   <TableCell>{event.items!.filter((value: ItemResource) => value!.user!.id === user.id).map((item: ItemResource, index: number) => <Chip
                     key={index}
                     label={item.name}

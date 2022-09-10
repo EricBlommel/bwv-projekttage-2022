@@ -11,6 +11,9 @@ import {connect, ConnectedProps} from "react-redux";
 import CreateEventButton from "./_shared/components/CreateEventButton";
 import Event from "./_shared/components/Event";
 import Home from "./HomePage/Home"
+import Login from "./HomePage/Login";
+import path from "path";
+import SignIn from "./HomePage/SignIn";
 
 const mapState = (state: RootState) => ({
   themeStoreDarkMode: state.themeStore.darkMode
@@ -43,12 +46,9 @@ function App(props: Props) {
         <CssBaseline/>
 
         <Routes>
-          <Route element={
-            <div>
-              <Home/>
-              <CreateEventButton/>
-            </div>
-          } path="/"/>
+          <Route path="/" element={<Home/>}/>
+          <Route path="/signin" element={<SignIn/>}/>
+          <Route path="/signup" element={<SignIn signUp/>}/>
           <Route path="/event/:id" element={<Event/>}/>
         </Routes>
 

@@ -27,7 +27,8 @@ function HappeningAppBar() {
             onClick={routeChange}
           >
             <Home/>
-          </IconButton>} path="/event/:id"/>
+          </IconButton>} path="/*"/>
+          <Route path="/"/>
         </Routes>
         <Typography variant="h6" component="div" color="inherit" sx={{flexGrow: 1}} fontFamily="Monospace">
           hAPPening
