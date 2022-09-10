@@ -1,8 +1,7 @@
 package com.laudert.backend.controller;
 
-import com.laudert.backend.db.EventEntity;
-import com.laudert.backend.db.EventRepository;
-import jdk.jfr.Event;
+import com.laudert.backend.domain.Event;
+import com.laudert.backend.repository.EventRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,12 +27,12 @@ public class EventController {
     }
 
     @GetMapping("")
-    public List<EventEntity> getEvents() {
+    public List<Event> getEvents() {
         return eventRepository.findAll();
     }
 
     @GetMapping("/get/{id}")
-    public EventEntity getevent(@PathVariable UUID id) {
+    public Event getevent(@PathVariable UUID id) {
         if(eventRepository.findById(id).isPresent()) {
             return eventRepository.findById(id).get();
         }
@@ -41,7 +40,7 @@ public class EventController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<EventEntity> createEvent(@RequestBody EventEntity event){
+    public ResponseEntity<Event> createEvent(@RequestBody Event event){
         try {
             return new ResponseEntity<>(eventRepository.save(event), HttpStatus.CREATED);
         } catch (Exception e) {

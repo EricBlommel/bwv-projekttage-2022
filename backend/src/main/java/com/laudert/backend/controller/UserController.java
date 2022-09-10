@@ -1,9 +1,7 @@
 package com.laudert.backend.controller;
 
-import com.laudert.backend.db.ItemEntity;
-import com.laudert.backend.db.ItemRepository;
-import com.laudert.backend.db.UserEntity;
-import com.laudert.backend.db.UserRepository;
+import com.laudert.backend.domain.User;
+import com.laudert.backend.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,12 +27,12 @@ public class UserController {
     }
 
     @GetMapping("")
-    public List<UserEntity> getItems() {
+    public List<User> getItems() {
         return userRepository.findAll();
     }
 
     @GetMapping("/get/{id}")
-    public UserEntity getevent(@PathVariable UUID id) {
+    public User getevent(@PathVariable UUID id) {
         if(userRepository.findById(id).isPresent()) {
             return userRepository.findById(id).get();
         }
@@ -42,7 +40,7 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<UserEntity> createEvent(@RequestBody UserEntity user){
+    public ResponseEntity<User> createEvent(@RequestBody User user){
         try {
             return new ResponseEntity<>(userRepository.save(user), HttpStatus.CREATED);
         } catch (Exception e) {

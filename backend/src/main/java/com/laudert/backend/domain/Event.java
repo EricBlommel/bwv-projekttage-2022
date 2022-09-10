@@ -1,4 +1,4 @@
-package com.laudert.backend.db;
+package com.laudert.backend.domain;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -22,7 +22,7 @@ import java.util.UUID;
 
 @Entity(name = "Event")
 @Table(name = "event")
-public class EventEntity {
+public class Event {
 
     @Id
     @Column(name = "id", unique = true, nullable = false, updatable = false)
@@ -48,7 +48,7 @@ public class EventEntity {
             name = "creator_fk"
         )
     )
-    private UserEntity creator;
+    private User creator;
 
     @ManyToMany
     @JoinTable(
@@ -56,7 +56,7 @@ public class EventEntity {
         joinColumns = @JoinColumn(name = "event_id"),
         inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private Set<UserEntity> users;
+    private Set<User> users;
 
     @OneToMany(
         mappedBy = "event",
@@ -64,12 +64,12 @@ public class EventEntity {
         cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
         fetch = FetchType.LAZY
     )
-    private Set<ItemEntity> items;
+    private Set<Item> items;
 
-    public EventEntity() {
+    public Event() {
     }
 
-    public EventEntity(UUID id, String name, Instant beginsAt, String description, UserEntity creator) {
+    public Event(UUID id, String name, Instant beginsAt, String description, User creator) {
         this.id = id;
         this.name = name;
         this.beginsAt = beginsAt;
@@ -77,7 +77,7 @@ public class EventEntity {
         this.creator = creator;
     }
 
-    public EventEntity(String name, Instant beginsAt, String description) {
+    public Event(String name, Instant beginsAt, String description) {
         this.name = name;
         this.beginsAt = beginsAt;
         this.description = description;
@@ -115,27 +115,27 @@ public class EventEntity {
         this.description = description;
     }
 
-    public UserEntity getCreator() {
+    public User getCreator() {
         return creator;
     }
 
-    public void setCreator(UserEntity creator) {
+    public void setCreator(User creator) {
         this.creator = creator;
     }
 
-    public Set<UserEntity> getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<UserEntity> users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
 
-    public Set<ItemEntity> getItems() {
+    public Set<Item> getItems() {
         return items;
     }
 
-    public void setItems(Set<ItemEntity> items) {
+    public void setItems(Set<Item> items) {
         this.items = items;
     }
 }
