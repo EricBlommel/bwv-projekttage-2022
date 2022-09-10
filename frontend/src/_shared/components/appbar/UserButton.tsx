@@ -1,39 +1,27 @@
 import * as React from 'react';
 import IconButton from "@mui/material/IconButton";
-import {AccountCircle, DarkMode, LightMode, Person} from "@mui/icons-material";
-import {RootState} from "../../helpers/store";
-import {connect, ConnectedProps} from "react-redux";
-import {themeSet} from "../../actions/theme.actions";
+import {AccountCircle} from "@mui/icons-material";
 import {Tooltip} from "@mui/material";
+import {useNavigate} from "react-router-dom";
 
-const mapStateToProps = (state: RootState) => ({
-    themeStoreDarkMode: state.themeStore.darkMode
-});
-
-const mapDispatchToProps = {
-    themeStoreThemeSet: themeSet
-};
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-interface Props extends ConnectedProps<typeof connector> {
-
+interface Props {
 }
 
 function UserButton(props: Props) {
 
-    const handleClick = () => {
-        const {themeStoreDarkMode, themeStoreThemeSet} = props;
-        themeStoreThemeSet(!themeStoreDarkMode);
+    let navigate = useNavigate();
+    const routeChange = () => {
+        let path = `/signin`;
+        navigate(path);
     }
 
     return (
         <Tooltip title={'login'}>
-            <IconButton onClick={handleClick} color="inherit" size="large">
+            <IconButton onClick={routeChange} color="inherit" size="large">
                 <AccountCircle/>
             </IconButton>
         </Tooltip>
     );
 }
 
-export default connector(UserButton);
+export default UserButton;
