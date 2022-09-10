@@ -1,4 +1,4 @@
-package com.laudert.backend.db;
+package com.laudert.backend.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "item")
-public class ItemEntity {
+public class Item {
 
     @Id
     @Column(name = "id", unique = true, nullable = false, updatable = false)
@@ -27,7 +27,7 @@ public class ItemEntity {
             name = "event_item_fk"
         )
     )
-    private EventEntity event;
+    private Event event;
 
     @ManyToOne
     @JoinColumn(
@@ -37,5 +37,5 @@ public class ItemEntity {
             name = "user_item_fk"
         )
     )
-    private UserEntity user;
+    private User user;
 }
