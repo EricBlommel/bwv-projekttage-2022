@@ -11,6 +11,8 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import { Navigate } from 'react-router-dom';
 import {EventResource} from "../types/event.type";
 import EventService from "../services/event.service";
+import {User, UserResource} from "../types/user.type";
+import AuthService from "../services/auth.service";
 
 const fabStyle = {
   position: 'absolute',
@@ -51,7 +53,10 @@ function CreateEventButton() {
 
   const handleSubmit = () => {
 
-    const event: EventResource = {name: name, beginsAt: date?.toDate(), description: description}
+    const user: User = AuthService.getCurrentUser();
+    const userResource: UserResource = {id: user.id, email: user.email, username: user.username, roles: user.roles}
+
+    const event: EventResource = {name: name, beginsAt: date?.toDate(), description: description/*, users: [userResource], creator: userResource*/}
 
     new EventService()
       .createEvent(event)

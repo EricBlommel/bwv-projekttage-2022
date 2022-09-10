@@ -4,6 +4,7 @@ import com.laudert.backend.domain.Event;
 import com.laudert.backend.repository.EventRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ public class EventController {
     }
 
     @GetMapping("")
+    @Secured("ROLE_USER")
     public List<Event> getEvents() {
         return eventRepository.findAll();
     }
@@ -40,6 +42,7 @@ public class EventController {
     }
 
     @PostMapping("/create")
+    @Secured("ROLE_USER")
     public ResponseEntity<Event> createEvent(@RequestBody Event event){
         try {
             return new ResponseEntity<>(eventRepository.save(event), HttpStatus.CREATED);

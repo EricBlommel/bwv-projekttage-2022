@@ -2,6 +2,7 @@ package com.laudert.backend.domain;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -38,6 +39,7 @@ public class Event {
     private Instant beginsAt;
 
     @Column(name = "description")
+    @Length(max = 1000)
     private String description;
 
     @ManyToOne

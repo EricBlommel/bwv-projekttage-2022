@@ -3,20 +3,18 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {ChangeEvent, useState} from "react";
 import AuthService from "../_shared/services/auth.service";
-import {useNavigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 import {Alert} from "@mui/material";
+
 
 function Copyright(props: any) {
   return (
@@ -33,6 +31,7 @@ function Copyright(props: any) {
 
 interface Props {
   signUp?: boolean;
+  forceUpdate: () => void;
 }
 
 function SignIn(props: Props) {
@@ -47,8 +46,7 @@ function SignIn(props: Props) {
   const [password, setPassword] = useState<string>("");
 
   let navigate = useNavigate();
-  const routeChange = () => {
-    let path = props.signUp? `/signin` : `/signup`;
+  const routeChange = (path: string) => {
     navigate(path);
   }
 
@@ -78,7 +76,7 @@ function SignIn(props: Props) {
       ).then(
         response => {
           setMessage(response.data.message);
-          setSuccessful(true);
+          routeChange("/signin")
         },
         error => {
           const resMessage =
@@ -99,7 +97,9 @@ function SignIn(props: Props) {
         password
       ).then(
         () => {
-          console.log("logged in");
+          setMessage("erfolgreich angemeldet")
+          setSuccessful(true);
+          props.forceUpdate();
         },
         error => {
           const resMessage =
@@ -175,10 +175,6 @@ function SignIn(props: Props) {
               autoComplete="current-password"
               onChange={onChangePassword}
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Angemeldet bleiben"
-            />
             <Button
               type="submit"
               fullWidth
@@ -189,7 +185,7 @@ function SignIn(props: Props) {
             </Button>
             <Grid container>
               <Grid item>
-                <Link href="#" variant="body2" onClick={routeChange}>
+                <Link href="#" variant="body2" onClick={() => routeChange(props.signUp? `/signin` : `/signup`)}>
                   {props.signUp? "Du hast bereits ein Konto? Anmeldung" : "Du hast kein Konto? Registrieren"}
                 </Link>
               </Grid>
@@ -203,6 +199,8 @@ function SignIn(props: Props) {
             {message}
           </Alert>
         </Snackbar>
+
+        {successful && (<Navigate to={"/"}/>)}
       </Container>
   );
 }
