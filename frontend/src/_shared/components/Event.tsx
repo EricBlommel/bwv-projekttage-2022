@@ -115,6 +115,8 @@ function Event(props: Props) {
           </Grid>
         </Grid>
       </Box>
+      <h1>{event.name}</h1>
+      <Button onClick={() => console.log(event)}>test</Button>
     </div>
   );
 }

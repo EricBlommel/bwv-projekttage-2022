@@ -11,10 +11,7 @@ const cardStyle = {
   maxHeight: 250
 };
 
-interface Props {
-}
-
-function Home(props: Props) {
+function Home() {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [events, setEvents] = useState<EventResource[]>([]);

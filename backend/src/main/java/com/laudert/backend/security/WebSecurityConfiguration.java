@@ -45,6 +45,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         "/swagger-ui/**",
         // other public endpoints
         "/api/event/**",
+        "/api/event/create",
         "/api/user/**",
         "/api/item/**",
         "/api/test/**",
@@ -79,7 +80,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-            .antMatchers("/api/test/**").permitAll()
+            .antMatchers("/api/**").permitAll()
+            .antMatchers("/**").permitAll()
             .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
