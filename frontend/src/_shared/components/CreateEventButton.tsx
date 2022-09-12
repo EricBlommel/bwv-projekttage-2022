@@ -40,7 +40,6 @@ function CreateEventButton() {
 
     const handleChangeName = (event: ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value);
-        console.log(name);
     };
 
     const handleChangeDate = (newDate: Dayjs | null) => {

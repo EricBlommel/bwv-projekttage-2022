@@ -29,8 +29,8 @@ function ThemeSwitch(props: Props) {
 
     return (
         <IconButton onClick={handleClick} color="inherit" size="large">
-            {props.themeStoreDarkMode && (<Tooltip title={'turn lightmode on'}><LightMode/></Tooltip>)}
-            {!props.themeStoreDarkMode && (<Tooltip title={'turn darkmode on'}><DarkMode/></Tooltip>)}
+            {props.themeStoreDarkMode && (<Tooltip title={'Lightmode'}><LightMode/></Tooltip>)}
+            {!props.themeStoreDarkMode && (<Tooltip title={'Darkmode'}><DarkMode/></Tooltip>)}
         </IconButton>
     );
 }

@@ -34,7 +34,7 @@ const themeLight = createTheme({
 })
 
 //create your forceUpdate hook
-function useForceUpdate(){
+function useForceUpdate() {
   const [value, setValue] = useState(0);
   return () => setValue(value => value + 1);
 }
@@ -53,14 +53,12 @@ function App(props: Props) {
       <BrowserRouter>
         <HappeningAppBar/>
         <CssBaseline/>
-
         <Routes>
-          <Route path="/" element={user? <Home/> : <HomeNotLoggedIn/>}/>
+          <Route index element={user ? <Home/> : <HomeNotLoggedIn/>}/>
           <Route path="/signin" element={<SignIn forceUpdate={forceUpdate}/>}/>
           <Route path="/signup" element={<SignIn signUp forceUpdate={forceUpdate}/>}/>
           <Route path="/event/:id" element={<Event/>}/>
         </Routes>
-
       </BrowserRouter>
     </ThemeProvider>
   );

@@ -3,16 +3,8 @@ import IconButton from "@mui/material/IconButton";
 import * as React from "react";
 import Stack from '@mui/material/Stack';
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert, {AlertProps} from '@mui/material/Alert';
 import {useState} from "react";
-import {Tooltip} from "@mui/material";
-
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-    props,
-    ref,
-) {
-    return <MuiAlert elevation={6000} ref={ref} variant="filled" {...props} />;
-});
+import {Alert, Tooltip} from "@mui/material";
 
 function CopyButton() {
 
@@ -38,16 +30,12 @@ function CopyButton() {
 
     return (
         <Stack>
-            <Tooltip title="Copy Url">
+            <Tooltip title="URL in Zwischenablage kopieren">
                 <IconButton onClick={copy} color="inherit" size="large">
                     <ContentCopyIcon/>
                 </IconButton>
             </Tooltip>
-            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="info" sx={{width: '100%'}}>
-                    Url copied!
-                </Alert>
-            </Snackbar>
+            <Snackbar open={open} autoHideDuration={2000} onClose={handleClose} message="URL wurde in die Zwischenablage kopiert"/>
         </Stack>
 
     );
