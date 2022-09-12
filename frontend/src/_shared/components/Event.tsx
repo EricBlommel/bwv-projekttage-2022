@@ -1,33 +1,57 @@
-import React, {useMemo, useRef, useState} from 'react';
-import {TestResource} from "../types/test.type";
+import React, {ChangeEvent, useMemo, useRef, useState} from 'react';
 import EventService from "../services/event.service";
-import {EventResource} from "../types/event.type";
+import {EventResponse} from "../types/event.type";
 import {useParams} from "react-router-dom";
-import {Box, Button, Chip, Grid, IconButton, Input, InputAdornment, OutlinedInput, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField} from "@mui/material";
-import {UserResource} from "../types/user.type";
-import {ItemResource} from "../types/item.type";
+import {
+  Backdrop,
+  Box,
+  Button,
+  Chip, CircularProgress,
+  Dialog, DialogActions,
+  DialogContent, DialogContentText, DialogTitle,
+  Grid,
+  IconButton,
+  InputAdornment,
+  OutlinedInput,
+  Paper,
+  styled,
+  Table,
+  TableBody,
+  TableCell,
+  tableCellClasses,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
+import {UserResource, UserResponse} from "../types/user.type";
+import {ItemResource, ItemResponse} from "../types/item.type";
 import {Send} from "@mui/icons-material";
+import AuthService from "../services/auth.service";
+import ItemService from "../services/item.service";
 
-interface Props {
-}
+const StyledTableCell = styled(TableCell)(({theme}) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
 
-interface item {
-  item: string;
-  user: string;
-}
-
-function Event(props: Props) {
+function Event() {
 
   let {id} = useParams();
+  let currentUser = AuthService.getCurrentUser();
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [event, setEvent] = useState<EventResource>({});
+  const [event, setEvent] = useState<EventResponse>({});
 
   const updateRef = useRef(() => {
     setLoading(true);
     new EventService()
       .getEvent(id!)
-      .then((response: TestResource) => {
+      .then((response: EventResponse) => {
         setEvent(response);
       })
       .catch(error => {
@@ -38,74 +62,189 @@ function Event(props: Props) {
       })
   });
 
-  //not in use
   const fetchData = useMemo(() => {
     updateRef.current();
     return true;
   }, [updateRef]);
 
-  const [uncategorizedItems, setUncategorizedItems] = useState<string[]>(["test"]);
-  const [text, setText] = useState<string>("");
-  const [categorizedItems, setCategorizedItems] = useState<item[]>([]);
-  const [users] = useState([]);
+  const handleEnterEvent = () => {
+    setLoading(true);
+    new EventService()
+      .addUserToEvent(id!, {id: currentUser.id})
+      .then((response: EventResponse) => {
+        setEvent(response);
+      })
+      .catch(error => {
+        console.log(error)
+      })
+      .finally(() => {
+        setLoading(false);
+      })
+  }
+
+  const handleAddItem = () => {
+    if (itemText.length > 0) {
+      setLoading(true);
+      new EventService()
+        .addItemToEvent(id!, {name: itemText, userId: undefined})
+        .then((response: EventResponse) => {
+          setEvent(response);
+          setItemText("")
+        })
+        .catch(error => {
+          console.log(error)
+        })
+        .finally(() => {
+          setLoading(false);
+        })
+    }
+  }
+
+  const handleDeleteItem = (id: string) => {
+    setLoading(true);
+    new ItemService()
+      .deleteById(id)
+      .then((response: string) => {
+        updateRef.current();
+      })
+      .catch(error => {
+        console.log(error)
+      })
+      .finally(() => {
+        setLoading(false);
+      })
+  }
+
+  const handleUpdateItem = (itemId: string, userId?: string) => {
+    setLoading(true);
+    if (userId) {
+      new ItemService()
+        .updateItemAddUser(itemId, userId)
+        .then((response: ItemResource) => {
+          updateRef.current();
+        })
+        .catch(error => {
+          console.log(error)
+        })
+        .finally(() => {
+          setLoading(false);
+        })
+    } else {
+      new ItemService()
+        .updateItemRemoveUser(itemId)
+        .then((response: ItemResource) => {
+          updateRef.current();
+        })
+        .catch(error => {
+          console.log(error)
+        })
+        .finally(() => {
+          setLoading(false);
+        })
+    }
+  }
+
+  const sortItems = (a: ItemResponse, b: ItemResponse) => {
+    if (a.name! > b.name!) {
+      return 1;
+    }
+
+    if (a.name! < b.name!) {
+      return -1;
+    }
+
+    return 0;
+  }
+
+  const sortUsers = (a: UserResponse, b: UserResponse) => {
+    if (a.username! > b.username!) {
+      return 1;
+    }
+
+    if (a.username! < b.username!) {
+      return -1;
+    }
+
+    return 0;
+  }
+
+  const [itemText, setItemText] = useState<string>("");
 
   return (
-    <div>
+    <>
+      <Backdrop
+        //sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit"/>
+      </Backdrop>
+      <Dialog open={event.users !== undefined && !event.users!.some((user) => user.id === currentUser.id)} fullWidth maxWidth="xs">
+        <DialogTitle>
+          {event.name}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Möchtest du dem Ereignis beitreten?
+          </DialogContentText>
+          <DialogActions>
+            <Button onClick={handleEnterEvent}>Beitreten</Button>
+          </DialogActions>
+        </DialogContent>
+      </Dialog>
       <Box sx={{margin: 4}}>
         <TableContainer component={Paper} sx={{minHeight: 400, maxHeight: 400}}>
           <Table stickyHeader={true}>
             <TableHead>
               <TableRow>
-                <TableCell>Benutzer</TableCell>
-                <TableCell>Items</TableCell>
+                <StyledTableCell>Benutzer</StyledTableCell>
+                <StyledTableCell>Gegenstände</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {event.users && event.users!.map((user: UserResource) =>
-                <TableRow>
-                  <TableCell>{user.username}</TableCell>
-                  <TableCell>{event.items!.filter((value: ItemResource) => value!.user!.id === user.id).map((item: ItemResource, index: number) => <Chip
-                    key={index}
-                    label={item.name}
-                    onDelete={() => console.log()}
-                    sx={{mt: 1}}
-                    style={{maxWidth: 'max-content'}}
-                  />)}</TableCell>
+              {event.users && event.users!.sort(sortUsers).map((user: UserResource, index: number) =>
+                <TableRow key={index}>
+                  <StyledTableCell>{user.username}</StyledTableCell>
+                  <StyledTableCell>{event.items && event.items!.filter((value: ItemResource) => value.user && value!.user!.id === user.id).sort(sortItems).map((item: ItemResource, index: number) =>
+                    <Chip
+                      key={index}
+                      label={item.name}
+                      onDelete={() => handleUpdateItem(item.id!)}
+                      sx={{marginRight: 1}}
+                      style={{maxWidth: 'max-content'}}
+                    />)}
+                  </StyledTableCell>
                 </TableRow>)}
-              <TableRow>
-                <TableCell>User1</TableCell>
-                <TableCell>User1</TableCell>
-              </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
       </Box>
       <Box sx={{margin: 4}}>
-        <Paper sx={{minHeight: 300, maxHeight: 300}}>
+        <Paper sx={{minHeight: 300, maxHeight: 300, paddingInlineEnd: 2, overflow: 'auto'}}>
           {
-            uncategorizedItems.map((uncategorizedItem, index) =>
+            event.items && event.items!.filter((value: ItemResponse) => !value!.user).sort(sortItems).map((item: ItemResource, index: number) =>
               <Chip
                 key={index}
-                label={uncategorizedItem}
-                onDelete={() => console.log("delete")}
-                sx={{margin: 2}}
-                onClick={() => console.log("delete")}
+                label={item.name}
+                onDelete={() => handleDeleteItem(item.id!)}
+                sx={{marginLeft: 2, marginTop: 2}}
+                onClick={() => handleUpdateItem(item.id!, AuthService.getCurrentUser().id)}
               />
             )}
         </Paper>
       </Box>
       <Box alignItems="center" sx={{margin: 4}}>
         <Grid container justifyContent="center" alignItems="center">
-          <Grid item >
+          <Grid item>
             <OutlinedInput
-              value={text}
-              onChange={() => console.log()}
+              value={itemText}
+              onChange={(event: ChangeEvent<HTMLInputElement>) => setItemText(event.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleAddItem()}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={() => console.log()}
-                    onMouseDown={() => console.log()}
+                    aria-label="add item button"
+                    onClick={handleAddItem}
+                    onMouseDown={handleAddItem}
                   >
                     <Send/>
                   </IconButton>
@@ -115,9 +254,7 @@ function Event(props: Props) {
           </Grid>
         </Grid>
       </Box>
-      <h1>{event.name}</h1>
-      <Button onClick={() => console.log(event)}>test</Button>
-    </div>
+    </>
   );
 }
 

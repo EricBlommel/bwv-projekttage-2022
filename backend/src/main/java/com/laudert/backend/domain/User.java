@@ -58,10 +58,9 @@ public class User {
     private Set<Event> events;
 
     @OneToMany(
+        fetch = FetchType.LAZY,
         mappedBy = "user",
-        orphanRemoval = true,
-        cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-        fetch = FetchType.LAZY
+        cascade = CascadeType.ALL
     )
     private Set<Item> items;
 
