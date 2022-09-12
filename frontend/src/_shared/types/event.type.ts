@@ -1,12 +1,23 @@
 import {HalResource} from "./hal.type";
-import {UserResource} from "./user.type";
-import {ItemResource} from "./item.type";
+import {UserResource, UserResponse} from "./user.type";
+import {ItemResource, ItemResponse} from "./item.type";
+import {Dayjs} from "dayjs";
 
-export interface Event {
+export interface EventRequest {
+  name?: string;
+  beginsAt?: Dayjs | null;
+  description?: string;
+  creatorId?: string;
+}
+
+export interface EventResponse extends HalResource {
+  id?: string;
   name?: string;
   beginsAt?: Date;
   description?: string;
-  creator_id?: string
+  creator?: UserResponse;
+  users?: UserResponse[];
+  items?: ItemResponse[];
 }
 
 export interface EventResource extends HalResource {

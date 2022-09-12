@@ -9,6 +9,15 @@ export interface User {
   username?: string;
 }
 
+export interface UserRequest {
+  id?: string;
+}
+
+export interface UserResponse {
+  id?: string;
+  username?: string;
+}
+
 export interface UserResource extends HalResource{
   id?: string;
   email?: string;

@@ -9,7 +9,7 @@ import {Add} from "@mui/icons-material";
 import {DesktopDatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import { Navigate } from 'react-router-dom';
-import {EventResource} from "../types/event.type";
+import {EventResource, EventRequest} from "../types/event.type";
 import EventService from "../services/event.service";
 import {User, UserResource} from "../types/user.type";
 import AuthService from "../services/auth.service";
@@ -54,9 +54,8 @@ function CreateEventButton() {
   const handleSubmit = () => {
 
     const user: User = AuthService.getCurrentUser();
-    const userResource: UserResource = {id: user.id, email: user.email, username: user.username, roles: user.roles}
 
-    const event: EventResource = {name: name, beginsAt: date?.toDate(), description: description/*, users: [userResource], creator: userResource*/}
+    const event: EventRequest = {name: name, beginsAt: date, description: description, creatorId: user.id}
 
     new EventService()
       .createEvent(event)
@@ -71,7 +70,7 @@ function CreateEventButton() {
       <Fab color="primary" size="large" onClick={handleClickOpen} sx={fabStyle}>
         <Add fontSize="large"/>
       </Fab>
-      <Dialog open={open} onClose={handleClose} fullWidth={true}>
+      <Dialog open={open} onClose={handleClose} fullWidth>
         <DialogTitle>Ereignis erstellen</DialogTitle>
         <DialogContent>
           <TextField
@@ -79,7 +78,7 @@ function CreateEventButton() {
             onChange={handleChangeName}
             autoFocus
             margin="dense"
-            placeholder="Gebe deinem Ereignis einen Namen"
+            placeholder="Gib dem Ereignis einen Namen"
             id="name"
             label="Name"
             fullWidth
@@ -110,7 +109,6 @@ function CreateEventButton() {
           <Button onClick={handleSubmit}>Erstellen</Button>
         </DialogActions>
       </Dialog>
-
       {redirectID && (<Navigate to={"/event/" + redirectID}/>)}
     </div>
   );

@@ -1,17 +1,6 @@
-import React, {useMemo, useRef, useState} from 'react';
-import EventService from "../_shared/services/event.service";
-import {EventResource} from "../_shared/types/event.type";
+import React from 'react';
 import {Avatar, Box, Button, Card, CardActionArea, CardContent, CardHeader, CssBaseline, Grid, Typography} from "@mui/material";
-import {Celebration} from "@mui/icons-material";
 import {Navigate, useNavigate} from "react-router-dom";
-import CreateEventButton from "../_shared/components/CreateEventButton";
-import AuthService from "../_shared/services/auth.service";
-import {User} from "../_shared/types/user.type";
-
-const cardStyle = {
-  minHeight: 250,
-  maxHeight: 250
-};
 
 interface Props {
 }
@@ -35,7 +24,7 @@ function HomeNotLoggedIn(props: Props) {
       }}
     >
       <Typography>
-        Du musst angemeldet sein um Ereignisse erstellen zu können.
+        Du musst angemeldet sein um Ereignisse anlegen zu können.
       </Typography>
       <Button variant="contained" sx={{mt: 2}} onClick={routeChange}>
         Anmelden
